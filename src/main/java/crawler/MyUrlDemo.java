@@ -15,7 +15,7 @@ public class MyUrlDemo {
     private static ArrayList<String> allWaitedUrl = new ArrayList<>();
     private static Set<String> allFinishedUrl = new HashSet<>();
     private static Map<String, Integer> allUrlDepth = new HashMap<>();
-    private static int maxDepth = 3;
+    private static int maxDepth = 2;
     private static int maxScope = 1;
 
     public static void main(String[] args) {
@@ -26,7 +26,8 @@ public class MyUrlDemo {
 
     public  static  void crawlPage(String strUrl, int depth, int scope) {
 //        System.out.println(url);
-        if (!(allFinishedUrl.contains(strUrl) || depth>maxDepth)) {
+        if (!(allFinishedUrl.contains(strUrl) || depth<maxDepth)) {
+            System.out.println("xxxxx");
             try {
                 URL url = new URL(strUrl);
                 URLConnection conn = url.openConnection();
@@ -53,9 +54,14 @@ public class MyUrlDemo {
             allFinishedUrl.add(strUrl);
             System.out.println(strUrl + " crawl finished! crawled: " + allFinishedUrl.size() + " Left:" + allWaitedUrl.size());
         }
-        String nextUrl = allWaitedUrl.get(0);
-        allWaitedUrl.remove(0);
-        crawlPage(nextUrl, allUrlDepth.get(nextUrl), 2);
+
+        if (allWaitedUrl.size() > 0) {
+            System.out.println("-----");
+            String nextUrl = allWaitedUrl.get(0);
+            allWaitedUrl.remove(0);
+            crawlPage(nextUrl, allUrlDepth.get(nextUrl), 2);
+        }
+
     }
 
 
